@@ -1,91 +1,158 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+"use client"
 
-const inter = Inter({ subsets: ['latin'] })
+import React from 'react'
+import styled from 'styled-components'
+import Footer from './components/Footer'
+import Header from './components/Header'
+import Image from "next/image"
+import Button from '@mui/material/Button'
+import CallIcon from '@mui/icons-material/Call'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import Divider  from '@mui/material/Divider'
+
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+  const router = useRouter()
+
+  const [open, setOpen] = React.useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <Wrapper>
+      <Header/>
+      <MainContainer>
+        <button onClick={() => router.push('/member')}>member 이동 // 임시</button>
+        <div className="main-title">
+          <span>AI Leader, MEGASTUDY</span>
+          <Image
+            alt="Megastudy logo"
+            src={require(`public/mega_white.png`)}
+          />
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
+        <div className="main-content">
+          <Image
+            alt="start"
+            src={require(`public/start.png`)}
+          />
+          <MainTextArea>
+            <div className="content-top">
+              <p>앞서가는 AI에듀테크,</p>
+              <p>메가스터디교육</p>
+            </div>
+            <div className="content-middle">
+              <p>AI음성인식, 음성합성, 검색솔루션</p>
+              <p>메가스터디교육은 고객이 AI를 통해</p>
+              <p>보다 높은 가치를 만들 수 있도록 돕습니다.</p>
+            </div>
+            <Button 
+              variant="contained" 
+              color="info" 
+              startIcon={<CallIcon />} 
+              className="call-btn"
+              size="large"
+              onClick={handleClickOpen}
+            >
+              서비스 문의하기
+            </Button>
+            <Dialog
+              open={open}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                유선으로 문의바랍니다.
+              </DialogTitle>
+              <Divider/>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description" sx={{fontFamily: "Roboto"}}>
+                  Tel. 02-123-4567
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} autoFocus>
+                  확인
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </MainTextArea>
         </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </MainContainer>
+      <Footer/>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+`
+const MainContainer = styled.div`
+  flex: 1;
+  padding: 40px 30px;
+
+  .main-title {
+    margin-bottom: 24px;
+    height: 144px;
+    background: #42A5F5;
+    border-radius: 12px;
+    font-size: 32px;
+    color: white;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > span {
+      margin-right: 10px;
+    }
+  }
+
+  
+
+  .main-content {
+    display: flex;
+  }
+
+`
+
+const MainTextArea = styled.div`
+  margin-left: 60px;
+
+  .content-top {
+    font-size: 46px;
+    font-weight: 700;
+    font-family: Roboto;
+    margin-bottom: 16px;
+  }
+
+  .content-middle {
+    font-size: 20px;
+    margin-bottom: 32px;
+
+    > p {
+      color: #676767;
+    }
+    
+    > p:first-child {
+      color: #2196F3;
+    }
+  }
+
+  .call-btn {
+    color: white;
+    border-radius: 20px;
+  }
+`

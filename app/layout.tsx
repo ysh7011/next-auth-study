@@ -1,4 +1,11 @@
+"use client"
+
 import './globals.css'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import muiTheme from './core/muiTheme'
+import StyledComponentsRegistry from './lib/registry'
+import { SessionProvider } from "next-auth/react"
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,7 +19,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SessionProvider refetchInterval={600}>
+          <ThemeProvider theme={muiTheme}>
+            <CssBaseline />
+            <StyledComponentsRegistry>
+              <>
+                {children}
+              </>
+            </StyledComponentsRegistry>
+          </ThemeProvider>
+          </SessionProvider>
+      </body>
     </html>
   )
 }
