@@ -13,6 +13,9 @@ import LockOpen from '@mui/icons-material/LockOpen'
 import { Controller, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
+import { signIn } from "next-auth/react"
+import { useQuery } from '@tanstack/react-query'
+import { globalToken } from '../core/token'
 
 interface UserForm {
   userId: string
@@ -43,7 +46,7 @@ const Index = () => {
       userPwd: '',
     }
   })
-  const { userId } = watch()
+  const { userId, userPwd } = watch()
   const [saveId, setSaveId] = React.useState(false)
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSaveId(event.target.checked)
@@ -63,11 +66,75 @@ const Index = () => {
 
   const router = useRouter()
 
-  const goToMember = handleSubmit(() => {
+  // 리액트 쿼리 정상 작동 확인함
+  // const { refetch, data :loginData} = useQuery(['login_test'], async () => {
+  //   console.log('=============자막상세정보 작동===============')
+  //   const fetchData = await fetch(`/api/sttSubtitleStorage`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${globalToken.access_token}`,
+  //       },
+  //       // body: JSON.stringify({
+  //       //   username: userId,
+  //       //   password: userPwd,
+  //       // })
+  //     })
+  //   const fetchDataJson = await fetchData.json()
+  //   return fetchDataJson
+  // },
+  // {
+  //   enabled : false
+  // })
+
+  // const { refetch, data :loginData} = useQuery(['login_test'], async () => {
+  //   console.log('=============로그인 작동===============')
+  //   const fetchData = await fetch(`/api/login`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       username: userId,
+  //       password: userPwd,
+  //     })
+  //   })
+  //   const fetchDataJson = await fetchData.json()
+  //   return fetchDataJson
+  // },
+  // {
+  //   enabled : false
+  // })
+
+  // console.log('loginData', loginData)
+
+  const goToMember = handleSubmit(async () => {
     if(saveId) localStorage.setItem('userId2', JSON.stringify(userId))
     else if(!saveId) localStorage.removeItem('userId2')
     localStorage.setItem('demo-login-success2', JSON.stringify(true))
-    router.push('/member')
+    // refetch()
+    // const fetchData = await fetch("/api/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username: userId,
+    //     password: userPwd,
+    //   }),
+    // })
+    // const fetchDataJson = await fetchData.json()
+    // console.log('fetchDataJson', fetchDataJson)
+    // if(fetchData.ok && fetchDataJson) {
+    //   return fetchDataJson
+    // } else return null
+
+    signIn("credentials", {
+      username: userId,
+      password: userPwd
+    })
+
+    // router.push('/user')
   })
   return (
     <LoginWrapper>

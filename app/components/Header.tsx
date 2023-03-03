@@ -42,7 +42,7 @@ const Header = () => {
         className="user-icon"
         onClick={doLogin}
       /> */}
-      {isLogin ? (
+      {/* {isLogin ? (
         <div className="login-icon-area">
           <AccountCircleIcon/>
           <IconButton onClick={doLogout}>
@@ -57,7 +57,13 @@ const Header = () => {
             Sign In
           </Button>
         )
-      }
+      } */}
+      <Button 
+        variant="outlined"
+        onClick={doLogin}
+      >
+        Sign In
+      </Button>
     </HeaderContainer>
   )
 }

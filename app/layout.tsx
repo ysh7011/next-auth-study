@@ -5,7 +5,14 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import muiTheme from './core/muiTheme'
 import StyledComponentsRegistry from './lib/registry'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { SessionProvider } from "next-auth/react"
+import { Session } from "next-auth"
+
+
 
 export const metadata = {
   title: 'Create Next App',
@@ -14,22 +21,29 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  session
 }: {
   children: React.ReactNode
+  session: Session
 }) {
+
+  const queryClient = new QueryClient()
+
   return (
     <html lang="en">
       <body>
-        <SessionProvider refetchInterval={600}>
-          <ThemeProvider theme={muiTheme}>
-            <CssBaseline />
-            <StyledComponentsRegistry>
-              <>
-                {children}
-              </>
-            </StyledComponentsRegistry>
-          </ThemeProvider>
-          </SessionProvider>
+        <SessionProvider session={session}>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={muiTheme}>
+              <CssBaseline />
+              <StyledComponentsRegistry>
+                <>
+                  {children}
+                </>
+              </StyledComponentsRegistry>
+            </ThemeProvider>
+          </QueryClientProvider>
+        </SessionProvider>
       </body>
     </html>
   )

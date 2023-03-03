@@ -1,0 +1,5 @@
+export const globalToken = {
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAwNTM5NzgsInN1YiI6IjY0OTZiNjFhLWI0M2UtNDYzZi05NWRiLTZhZTY2MTc5MDA5YSIsInRvdHAiOmZhbHNlfQ.bYm414kLiiSHb8GgxBbgO8jFZZeWqfnrp9jwHKacQWyvlip7OKCwLbuvICGbOoEQDdZDFOGCBtZpNVn__X_ueQ",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODAwNTM5NzgsInN1YiI6IjY0OTZiNjFhLWI0M2UtNDYzZi05NWRiLTZhZTY2MTc5MDA5YSIsInJlZnJlc2giOnRydWV9.TR3hPUXG5IcuBJnvyqoCAIOIdMwP0c4dgspvoLgL_CJp9kxlRgl5009pPU2JRP1MpP3PQxRb2M6ccj1BMXYD9g",
+  "token_type": "bearer"
+}
