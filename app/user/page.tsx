@@ -1,15 +1,19 @@
 "use client"
 
 import React from 'react'
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
+import Header from '../components/Header'
 
 const Index = () => {
-  const { data } = useSession()
+  const { data: session, status } = useSession()
 
-  console.log('data', data)
+  console.log('session', session)
+  console.log('status', status)
+
   return (
     <div>
-      로그인 완료
+      <Header/>
+      <div>로그인 완료</div>
     </div>
   )
 }

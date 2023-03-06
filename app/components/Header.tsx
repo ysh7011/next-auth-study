@@ -8,21 +8,20 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const Header = () => {
   const router = useRouter()
-  const [isLogin, setIsLogin] = React.useState()
-  React.useEffect(() => {
-    setIsLogin(JSON.parse(localStorage.getItem('demo-login-success2') as string))
-  },[])
   
   const doLogin = () => {
     router.push('/login')
   }
   const doLogout = () => {
-    localStorage.removeItem('demo-login-success2')
-    router.push('/')
+    signOut({callbackUrl: "/login"})
+    // router.push('/')
   }
+
+  const { data: session } = useSession()
 
   return (
     <HeaderContainer>
@@ -37,33 +36,27 @@ const Header = () => {
           />
         </div>
       </Link>
-      {/* <FontAwesomeIcon 
-        icon={faCircleUser} 
-        className="user-icon"
-        onClick={doLogin}
-      /> */}
-      {/* {isLogin ? (
-        <div className="login-icon-area">
-          <AccountCircleIcon/>
-          <IconButton onClick={doLogout}>
-            <LogoutIcon/>
-          </IconButton>
-        </div>
-        ) : (
-          <Button 
-            variant="outlined"
-            onClick={doLogin}
-          >
-            Sign In
-          </Button>
-        )
-      } */}
+      {session?
+      (
+      <>
+        <span>{session.username}</span>
+        <Button 
+          variant="outlined"
+          onClick={doLogout}
+        >
+          log out
+        </Button>
+      </>
+      ): (
       <Button 
         variant="outlined"
         onClick={doLogin}
       >
         Sign In
       </Button>
+      )
+      }
+      
     </HeaderContainer>
   )
 }

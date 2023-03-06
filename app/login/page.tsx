@@ -13,7 +13,7 @@ import LockOpen from '@mui/icons-material/LockOpen'
 import { Controller, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { useQuery } from '@tanstack/react-query'
 import { globalToken } from '../core/token'
 
@@ -65,6 +65,7 @@ const Index = () => {
   const { errors } = formState
 
   const router = useRouter()
+  const { status } = useSession()
 
   // 리액트 쿼리 정상 작동 확인함
   // const { refetch, data :loginData} = useQuery(['login_test'], async () => {
@@ -87,17 +88,14 @@ const Index = () => {
   //   enabled : false
   // })
 
-  // const { refetch, data :loginData} = useQuery(['login_test'], async () => {
+  // const { refetch, data :loginData, isSuccess} = useQuery(['login_test'], async () => {
   //   console.log('=============로그인 작동===============')
   //   const fetchData = await fetch(`/api/login`, {
   //     method: "POST",
   //     headers: {
-  //       "Content-Type": "application/json",
+  //       "Content-Type": "application/x-www-form-urlencoded",
   //     },
-  //     body: JSON.stringify({
-  //       username: userId,
-  //       password: userPwd,
-  //     })
+  //     body: `username=${userId}&password=${userPwd}`,
   //   })
   //   const fetchDataJson = await fetchData.json()
   //   return fetchDataJson
@@ -107,21 +105,20 @@ const Index = () => {
   // })
 
   // console.log('loginData', loginData)
+  // console.log('isSuccess', isSuccess)
 
   const goToMember = handleSubmit(async () => {
     if(saveId) localStorage.setItem('userId2', JSON.stringify(userId))
     else if(!saveId) localStorage.removeItem('userId2')
-    localStorage.setItem('demo-login-success2', JSON.stringify(true))
+
     // refetch()
+
     // const fetchData = await fetch("/api/login", {
     //   method: "POST",
     //   headers: {
-    //     "Content-Type": "application/json",
+    //     "Content-Type": "application/x-www-form-urlencoded",
     //   },
-    //   body: JSON.stringify({
-    //     username: userId,
-    //     password: userPwd,
-    //   }),
+    //   body: `username=${userId}&password=${userPwd}`,
     // })
     // const fetchDataJson = await fetchData.json()
     // console.log('fetchDataJson', fetchDataJson)
@@ -129,13 +126,26 @@ const Index = () => {
     //   return fetchDataJson
     // } else return null
 
-    signIn("credentials", {
+
+    // console.log(userId, userPwd)
+    const result = await signIn("credentials", {
+      redirect : false, // 에러발생시 404로 이동하지 말고 제자리에 있게함
       username: userId,
       password: userPwd
     })
 
-    // router.push('/user')
+    console.log('result', result)
+
+    if(result?.error) {
+      alert('아이디와 비밀번호를 확인해주세요')
+    }
   })
+
+  React.useEffect(() => {
+    if (status === "authenticated") router.push("/user")
+  }, [router, status])
+
+  
   return (
     <LoginWrapper>
       <LoginContainer>

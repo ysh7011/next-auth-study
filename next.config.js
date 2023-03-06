@@ -6,11 +6,16 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  swcMinify: true,
   async rewrites() {
     return [
       {
         source: "/api/login",
-        destination: `http://101.101.218.154:81/api/v1/login/oauth/`
+        destination: `http://101.101.218.154:81/api/v1/login/oauth`
+      },
+      {
+        source: "/api/refresh",
+        destination: `http://101.101.218.154:81/api/v1/login/refresh`
       },
       {
         source: "/api/sttSubtitleStorage",
