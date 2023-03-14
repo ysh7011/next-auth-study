@@ -17,6 +17,10 @@ import { signIn, useSession } from "next-auth/react"
 import { useQuery } from '@tanstack/react-query'
 import { globalToken } from '../core/token'
 
+import CryptoJS from "crypto-js"
+
+
+
 interface UserForm {
   userId: string
   userPwd: string
@@ -110,28 +114,11 @@ const Index = () => {
   const goToMember = handleSubmit(async () => {
     if(saveId) localStorage.setItem('userId2', JSON.stringify(userId))
     else if(!saveId) localStorage.removeItem('userId2')
-
-    // refetch()
-
-    // const fetchData = await fetch("/api/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/x-www-form-urlencoded",
-    //   },
-    //   body: `username=${userId}&password=${userPwd}`,
-    // })
-    // const fetchDataJson = await fetchData.json()
-    // console.log('fetchDataJson', fetchDataJson)
-    // if(fetchData.ok && fetchDataJson) {
-    //   return fetchDataJson
-    // } else return null
-
-
-    // console.log(userId, userPwd)
+    
     const result = await signIn("credentials", {
       redirect : false, // 에러발생시 404로 이동하지 말고 제자리에 있게함
       username: userId,
-      password: userPwd
+      password: CryptoJS.AES.encrypt(JSON.stringify(userPwd), process.env.CRYPTO_SECRET_KEY as string).toString() //userPwd
     })
 
     console.log('result', result)

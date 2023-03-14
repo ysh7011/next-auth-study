@@ -6,6 +6,10 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  env: {
+    SECRET_KEY: process.env.SECRET_KEY,
+    CRYPTO_SECRET_KEY: process.env.CRYPTO_SECRET_KEY,
+  },
   swcMinify: true,
   async rewrites() {
     return [

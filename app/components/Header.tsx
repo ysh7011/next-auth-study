@@ -38,15 +38,15 @@ const Header = () => {
       </Link>
       {session?
       (
-      <>
-        <span>{session.username}</span>
+      <div>
+        {/* <span>{session.user_name.split("@")[0]} 님</span> */}
         <Button 
           variant="outlined"
           onClick={doLogout}
         >
           log out
         </Button>
-      </>
+      </div>
       ): (
       <Button 
         variant="outlined"
